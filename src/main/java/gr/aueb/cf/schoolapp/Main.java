@@ -1,7 +1,6 @@
 package gr.aueb.cf.schoolapp;
 
 import gr.aueb.cf.schoolapp.view_controller.*;
-
 import java.awt.EventQueue;
 
 public class Main {
@@ -14,36 +13,34 @@ public class Main {
 	private static final InsertTeacherPage insertTeacherPage = new InsertTeacherPage();
 	
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					
-					landingPage.setVisible(true);
-					landingPage.setLocationRelativeTo(null);
-					
-					loginPage.setVisible(false);
-					loginPage.setLocationRelativeTo(null);
-					
-					dashboard.setVisible(false);
-					dashboard.setLocationRelativeTo(null);
-					
-					viewTeachersPage.setVisible(false);
-					viewTeachersPage.setLocationRelativeTo(null);
-					
-					insertTeacherPage.setVisible(false);
-					insertTeacherPage.setLocationRelativeTo(null);
-					
-					teacherView.setVisible(false);
-					teacherView.setLocationRelativeTo(null);
-					
-					updateTeacherPage.setVisible(false);
-					updateTeacherPage.setLocationRelativeTo(null);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+
+                landingPage.setVisible(true);
+                landingPage.setLocationRelativeTo(null);
+
+                loginPage.setVisible(false);
+                loginPage.setLocationRelativeTo(null);
+
+                dashboard.setVisible(false);
+                dashboard.setLocationRelativeTo(null);
+
+                viewTeachersPage.setVisible(false);
+                viewTeachersPage.setLocationRelativeTo(null);
+
+                insertTeacherPage.setVisible(false);
+                insertTeacherPage.setLocationRelativeTo(null);
+
+                teacherView.setVisible(false);
+                teacherView.setLocationRelativeTo(null);
+
+                updateTeacherPage.setVisible(false);
+                updateTeacherPage.setLocationRelativeTo(null);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 	}
 
 	public static LandingPage getLandingPage() {
