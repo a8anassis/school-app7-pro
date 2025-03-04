@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import gr.aueb.cf.schoolapp.Main;
 import gr.aueb.cf.schoolapp.model.City;
 
 import java.awt.Color;

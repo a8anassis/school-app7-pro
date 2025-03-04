@@ -26,6 +26,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import gr.aueb.cf.schoolapp.Main;
 import gr.aueb.cf.schoolapp.model.City;
 
 public class UpdateTeacherPage extends JFrame {
