@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 
 import gr.aueb.cf.schoolapp.Main;
 import gr.aueb.cf.schoolapp.model.City;
+import gr.aueb.cf.schoolapp.util.DBUtil;
 
 //import gr.aueb.cf.schoolapp.model.City;
 
@@ -295,9 +296,10 @@ public class InsertTeacherPage extends JFrame {
 				String sql = "INSERT INTO teachers (firstname, lastname, vat, fathername, phone_num, "
             			+ "email, street, street_num, zipcode, city_id, uuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				
-            	Connection conn = Dashboard.getConnection();
+//            	Connection conn = Dashboard.getConnection();
             	
-				try (PreparedStatement ps = conn.prepareStatement(sql)) {
+				try (Connection conn = DBUtil.getConnection();
+					 PreparedStatement ps = conn.prepareStatement(sql)) {
 					
 					ps.setString(1, firstname);
 					ps.setString(2, lastname);
