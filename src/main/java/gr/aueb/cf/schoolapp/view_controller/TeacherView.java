@@ -227,72 +227,73 @@ public class TeacherView extends JFrame {
 //	private void fetchTeacherFromDatabase(int id) {
 	private void fetchTeacherFromDatabase(String uuid) {
 //		String sql = "SELECT * FROM teachers WHERE id = ?";
-		String sql = "SELECT * FROM teachers WHERE uuid = ?";
-		Connection conn = Dashboard.getConnection();
-		
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			
-			//ps.setInt(1, id);
-			ps.setString(1, uuid);
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.next()) {
-				kwdikosText.setText(rs.getString("uuid")); //.substring(0, 8));
-				firstnameText.setText(rs.getString("firstname"));
-				lastnameText.setText(rs.getString("lastname"));
-				vatText.setText(rs.getString("vat"));
-				fathernameText.setText(rs.getString("fathername"));
-				phoneNumText.setText(rs.getString("phone_num"));
-				emailText.setText(rs.getString("email"));
-				streetText.setText(rs.getString("street"));
-				streetNumText.setText(rs.getString("street_num"));
-				//cityComboBox.setSelectedIndex(rs.getInt("city_id")-1);
-				int cityIdFromDB = rs.getInt("city_id"); // Get city_id from DB
-//				System.out.println("city_id" + cityIdFromDB);
-				// Find the matching city using Streams
-				City selectedCity = cities.stream()
-				    .filter(city -> city.getId() == cityIdFromDB)
-				    .findFirst()
-				    .orElse(null); // Returns null if no match is found
-//				System.out.println("Selected City: " + selectedCity);
-				// Select the city in the JComboBox
-				if (selectedCity != null) {
-				    cityText.setText(selectedCity.getName());
-				} //else cityComboBox.setSelectedIndex(0);
-				
-//				City selectedCity = (City) cityComboBox.getSelectedItem();
-//				int cityId = selectedCity.getId();
-				
-				zipcodeText.setText(rs.getString("zipcode"));
-//				errorFirstname.setText("");
-//				errorLastname.setText("");
-			}	
-		} catch (SQLException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null,  "Select error in fetch teacher", "Error", JOptionPane.ERROR_MESSAGE);	
-		}
+//		String sql = "SELECT * FROM teachers WHERE uuid = ?";
+//		Connection conn = Dashboard.getConnection();
+//
+//		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//			//ps.setInt(1, id);
+//			ps.setString(1, uuid);
+//			ResultSet rs = ps.executeQuery();
+//
+//			if (rs.next()) {
+//				kwdikosText.setText(rs.getString("uuid")); //.substring(0, 8));
+//				firstnameText.setText(rs.getString("firstname"));
+//				lastnameText.setText(rs.getString("lastname"));
+//				vatText.setText(rs.getString("vat"));
+//				fathernameText.setText(rs.getString("fathername"));
+//				phoneNumText.setText(rs.getString("phone_num"));
+//				emailText.setText(rs.getString("email"));
+//				streetText.setText(rs.getString("street"));
+//				streetNumText.setText(rs.getString("street_num"));
+//				//cityComboBox.setSelectedIndex(rs.getInt("city_id")-1);
+//				int cityIdFromDB = rs.getInt("city_id"); // Get city_id from DB
+////				System.out.println("city_id" + cityIdFromDB);
+//				// Find the matching city using Streams
+//				City selectedCity = cities.stream()
+//				    .filter(city -> city.getId() == cityIdFromDB)
+//				    .findFirst()
+//				    .orElse(null); // Returns null if no match is found
+////				System.out.println("Selected City: " + selectedCity);
+//				// Select the city in the JComboBox
+//				if (selectedCity != null) {
+//				    cityText.setText(selectedCity.getName());
+//				} //else cityComboBox.setSelectedIndex(0);
+//
+////				City selectedCity = (City) cityComboBox.getSelectedItem();
+////				int cityId = selectedCity.getId();
+//
+//				zipcodeText.setText(rs.getString("zipcode"));
+////				errorFirstname.setText("");
+////				errorLastname.setText("");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			JOptionPane.showMessageDialog(null,  "Select error in fetch teacher", "Error", JOptionPane.ERROR_MESSAGE);
+//		}
 	}
 	
 	private List<City> fetchCitiesFromDatabase() {
-		String sql = "SELECT * FROM cities order by name asc";
-		List<City> cities = new ArrayList<>();
-		Connection conn = Dashboard.getConnection();
-		
-		try (PreparedStatement ps = conn.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
-			
-	        while (rs.next()) {
-	            int id = rs.getInt("id"); // Get the id column
-	            String name = rs.getString("name"); // Get the name column
-
-	            // Create a City object and add it to the list
-	            City city = new City(id, name);
-	            cities.add(city);
-	        }     
-		} catch (SQLException e) {
-			//e.printStackTrace();
-			JOptionPane.showMessageDialog(null,  "Select error in fetch cities", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		return cities;	
+//		String sql = "SELECT * FROM cities order by name asc";
+//		List<City> cities = new ArrayList<>();
+//		Connection conn = Dashboard.getConnection();
+//
+//		try (PreparedStatement ps = conn.prepareStatement(sql);
+//				ResultSet rs = ps.executeQuery()) {
+//
+//	        while (rs.next()) {
+//	            int id = rs.getInt("id"); // Get the id column
+//	            String name = rs.getString("name"); // Get the name column
+//
+//	            // Create a City object and add it to the list
+//	            City city = new City(id, name);
+//	            cities.add(city);
+//	        }
+//		} catch (SQLException e) {
+//			//e.printStackTrace();
+//			JOptionPane.showMessageDialog(null,  "Select error in fetch cities", "Error", JOptionPane.ERROR_MESSAGE);
+//		}
+//		return cities;
+		return null;
 	}
 }

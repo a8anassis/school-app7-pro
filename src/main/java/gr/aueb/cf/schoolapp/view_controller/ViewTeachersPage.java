@@ -240,54 +240,54 @@ public class ViewTeachersPage extends JFrame {
 
 	private void buildTable() {
 //	    String sql = "SELECT id, firstname, lastname FROM teachers WHERE lastname LIKE ?";
-		String sql = "SELECT uuid, firstname, lastname FROM teachers WHERE lastname LIKE ?";
-	    Connection conn = Dashboard.getConnection();
-	    
-	    try (
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-	        ps.setString(1, lastnameText.getText().trim() + "%");
-	        ResultSet rs = ps.executeQuery();
-	        
-	        model.setRowCount(0); // Clear the table
-	        while (rs.next()) {
-	            Object[] row = {
-	            	rs.getString("uuid"), //.substring(0, 8),
-//	                rs.getString("id"),
-	                rs.getString("firstname"),
-	                rs.getString("lastname")
-	            };
-	            model.addRow(row);
-	        }
-	    } catch (SQLException e) {
-	    	e.printStackTrace();
-	        JOptionPane.showMessageDialog(null, "Select error", "Error", JOptionPane.ERROR_MESSAGE);
-	    }
+		//String sql = "SELECT uuid, firstname, lastname FROM teachers WHERE lastname LIKE ?";
+//	    Connection conn = Dashboard.getConnection();
+//
+//	    try (
+//	         PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//	        ps.setString(1, lastnameText.getText().trim() + "%");
+//	        ResultSet rs = ps.executeQuery();
+//
+//	        model.setRowCount(0); // Clear the table
+//	        while (rs.next()) {
+//	            Object[] row = {
+//	            	rs.getString("uuid"), //.substring(0, 8),
+////	                rs.getString("id"),
+//	                rs.getString("firstname"),
+//	                rs.getString("lastname")
+//	            };
+//	            model.addRow(row);
+//	        }
+//	    } catch (SQLException e) {
+//	    	e.printStackTrace();
+//	        JOptionPane.showMessageDialog(null, "Select error", "Error", JOptionPane.ERROR_MESSAGE);
+//	    }
 	}
 	
 	//private void doDelete(int id) {
 	private void doDelete(String uuid) {
 //		String sql = "DELETE FROM teachers WHERE id = ?";
-		String sql = "DELETE FROM teachers WHERE uuid = ?";
-		Connection conn = Dashboard.getConnection();
-		
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			
-			//ps.setInt(1, id);
-			ps.setString(1, uuid);
-			
-			int answer = JOptionPane.showConfirmDialog(null, "Είστε σίγουρη/ος", "Διαγραφή", 
-					JOptionPane.YES_NO_OPTION);
-			if (answer == JOptionPane.YES_OPTION) {
-				int rowsAffected = ps.executeUpdate();
-				JOptionPane.showMessageDialog(null, rowsAffected + " γρααμμή/ες διαγράφηκαν", "Διαγραφή", 
-						JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				return;
-			}							
-		} catch (SQLException ex) {
-			//ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,  "Delete error", "Error", JOptionPane.ERROR_MESSAGE);
-		}
+//		String sql = "DELETE FROM teachers WHERE uuid = ?";
+//		Connection conn = Dashboard.getConnection();
+//
+//		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//			//ps.setInt(1, id);
+//			ps.setString(1, uuid);
+//
+//			int answer = JOptionPane.showConfirmDialog(null, "Είστε σίγουρη/ος", "Διαγραφή",
+//					JOptionPane.YES_NO_OPTION);
+//			if (answer == JOptionPane.YES_OPTION) {
+//				int rowsAffected = ps.executeUpdate();
+//				JOptionPane.showMessageDialog(null, rowsAffected + " γρααμμή/ες διαγράφηκαν", "Διαγραφή",
+//						JOptionPane.INFORMATION_MESSAGE);
+//			} else {
+//				return;
+//			}
+//		} catch (SQLException ex) {
+//			//ex.printStackTrace();
+//			JOptionPane.showMessageDialog(null,  "Delete error", "Error", JOptionPane.ERROR_MESSAGE);
+//		}
 	}
 }
