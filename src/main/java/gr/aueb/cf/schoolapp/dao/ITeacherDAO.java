@@ -15,7 +15,7 @@ public interface ITeacherDAO {
     List<Teacher> getAll() throws TeacherDAOException;
 
     // Queries
-    Teacher getByUUID(String uuid);
-    Teacher getByLastname(String lastname);
-    Teacher getTeacherByVat(String vat);
+    Teacher getByUUID(String uuid) throws TeacherDAOException;
+    Teacher getByLastname(String lastname) throws TeacherDAOException;
+    Teacher getTeacherByVat(String vat) throws TeacherDAOException;
 }
