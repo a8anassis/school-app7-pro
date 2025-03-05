@@ -90,7 +90,19 @@ public class TeacherDAOImpl implements ITeacherDAO {
 
     @Override
     public void delete(Integer id) throws TeacherDAOException {
+        String sql = "DELETE FROM teachers WHERE id = ?";
 
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            // logging
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // logging
+            throw new TeacherDAOException("SQL Error. Teacher with id: " + id + " not deleted.");
+        }
     }
 
     @Override
