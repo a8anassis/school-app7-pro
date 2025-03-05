@@ -334,8 +334,8 @@ public class InsertTeacherPage extends JFrame {
 		JButton closeBtn = new JButton("Κλείσιμο");
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.getInsertTeacherPage().setVisible(false);
 				Main.getDashboard().setEnabled(true);
+				Main.getInsertTeacherPage().setVisible(false);
 			}
 		});
 

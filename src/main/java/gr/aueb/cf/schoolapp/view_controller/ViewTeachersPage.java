@@ -213,8 +213,8 @@ public class ViewTeachersPage extends JFrame {
 		JButton closeBtn = new JButton("Κλείσιμο");
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.getViewTeachersPage().setVisible(false);
 				Main.getDashboard().setEnabled(true);
+				Main.getViewTeachersPage().setVisible(false);
 			}
 		});
 		closeBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
