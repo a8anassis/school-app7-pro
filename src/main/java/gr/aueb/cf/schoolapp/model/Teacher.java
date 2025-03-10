@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Teacher {
     private Integer id;
     private String firstname;
-    private String  lastname;
+    private String lastname;
     private String vat;
     private String fatherName;
     private String phoneNum;

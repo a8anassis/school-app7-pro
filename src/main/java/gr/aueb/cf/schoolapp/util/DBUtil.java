@@ -26,7 +26,7 @@ public class DBUtil {
 
     public static Connection getConnection() throws SQLException {
         connection = ds.getConnection();
-        System.out.println("Connection created");
+        // System.out.println("Connection created");
         return connection;
     }
 
