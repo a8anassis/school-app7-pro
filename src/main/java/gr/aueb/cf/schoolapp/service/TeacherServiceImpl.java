@@ -76,7 +76,18 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void deleteTeacher(Integer id) throws TeacherDAOException, TeacherNotFoundException {
-
+        try {
+            if (teacherDAO.getById(id) == null) {
+                throw new TeacherNotFoundException("Teacher with id: " + id + " not found");
+            }
+            // logging
+            teacherDAO.delete(id);
+        } catch (TeacherDAOException | TeacherNotFoundException e) {
+            e.printStackTrace();
+            // logging
+            // rollback
+            throw e;
+        }
     }
 
     @Override
