@@ -5,8 +5,21 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import gr.aueb.cf.schoolapp.Main;
+import gr.aueb.cf.schoolapp.dao.CityDAOImpl;
+import gr.aueb.cf.schoolapp.dao.ICityDAO;
+import gr.aueb.cf.schoolapp.dao.ITeacherDAO;
+import gr.aueb.cf.schoolapp.dao.TeacherDAOImpl;
+import gr.aueb.cf.schoolapp.dao.exceptions.TeacherDAOException;
+import gr.aueb.cf.schoolapp.dto.TeacherInsertDTO;
+import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
+import gr.aueb.cf.schoolapp.exceptions.TeacherAlreadyExistsException;
 import gr.aueb.cf.schoolapp.model.City;
+import gr.aueb.cf.schoolapp.service.CityServiceImpl;
+import gr.aueb.cf.schoolapp.service.ICityService;
+import gr.aueb.cf.schoolapp.service.ITeacherService;
+import gr.aueb.cf.schoolapp.service.TeacherServiceImpl;
 import gr.aueb.cf.schoolapp.util.DBUtil;
+import gr.aueb.cf.schoolapp.validator.TeacherValidator;
 
 //import gr.aueb.cf.schoolapp.model.City;
 
@@ -29,6 +42,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -51,26 +65,22 @@ public class InsertTeacherPage extends JFrame {
 	private JLabel errorLastname;
 	private JComboBox<City> cityComboBox;
 	private List<City> cities = new ArrayList<>();
-	
+
+	private final ITeacherDAO teacherDAO = new TeacherDAOImpl();
+	private final ITeacherService teacherService = new TeacherServiceImpl(teacherDAO);
+
+	private final ICityDAO cityDAO = new CityDAOImpl();
+	private final ICityService cityService = new CityServiceImpl(cityDAO);
+
 	public InsertTeacherPage() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
-				cities = fetchCitiesFromDatabase();
-				cities.forEach(city -> cityComboBox.addItem(city));
-				
-				firstnameText.setText("");
-				lastnameText.setText("");
-				vatText.setText("");
-				fathernameText.setText("");
-				phoneNumberText.setText("");
-				emailText.setText("");
-				streetText.setText("");
-				streetNumberText.setText("");
-				cityComboBox.setSelectedIndex(0);
-				zipcodeText.setText("");
-				errorFirstname.setText("");
-				errorLastname.setText("");
+				try {
+					cityService.getAllCities().forEach(cityComboBox::addItem);
+				} catch (SQLException ex) {
+					JOptionPane.showMessageDialog(null, "Get cities fatal error. " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -140,7 +150,7 @@ public class InsertTeacherPage extends JFrame {
 				String inputFirstname;	
 				inputFirstname = firstnameText.getText().trim();	
 				
-				errorFirstname.setText(inputFirstname.equals("") ? "Το όνομα είναι υποχρεωτικό" : "");
+				errorFirstname.setText(inputFirstname.isEmpty() ? "Το όνομα είναι υποχρεωτικό" : "");
 			}
 		});
 		
@@ -155,7 +165,7 @@ public class InsertTeacherPage extends JFrame {
 				String inputLastname;	
 				inputLastname = lastnameText.getText().trim();	
 				
-				errorLastname.setText(inputLastname.equals("") ? "Το επώνυμο είναι υποχρεωτικό" : "");
+				errorLastname.setText(inputLastname.isEmpty() ? "Το επώνυμο είναι υποχρεωτικό" : "");
 			}
 		});
 
@@ -163,17 +173,17 @@ public class InsertTeacherPage extends JFrame {
 		lblFirstname.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblFirstname.setBounds(29, 135, 62, 29);
 		contentPane.add(lblFirstname);
-		
+
 		JLabel lblLastname = new JLabel("Επώνυμο*");
 		lblLastname.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblLastname.setBounds(432, 135, 84, 29);
 		contentPane.add(lblLastname);
-		
+
 		JLabel lblVat = new JLabel("ΑΦΜ*");
 		lblVat.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblVat.setBounds(41, 202, 50, 29);
 		contentPane.add(lblVat);
-		
+
 		vatText = new JTextField();
 		vatText.setColumns(10);
 		vatText.setBounds(91, 198, 263, 37);
@@ -263,65 +273,23 @@ public class InsertTeacherPage extends JFrame {
 		insertBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Data Binding
-			
-				String firstname = firstnameText.getText().trim();
-				String lastname = lastnameText.getText().trim();
-				String vat = vatText.getText().trim();
-				String fathername = fathernameText.getText().trim();
-				String phoneNumber = phoneNumberText.getText().trim();
-				String email = emailText.getText().trim();
-				String street = streetText.getText().trim();
-				String streetNumber = streetNumberText.getText().trim();
-				City selectedCity = (City) cityComboBox.getSelectedItem();
-				int cityId = selectedCity.getId();
-				String zipcode = zipcodeText.getText().trim();
-				
-				
+				TeacherInsertDTO insertDTO = doDataBinding();
+				TeacherReadOnlyDTO teacherReadOnlyDTO;
 				// Validation
-				
-//				errorFirstname.setText(firstname.equals("") ? "Το όνομα είναι υποχρεωτικό" : "");
-//
-//				// Validate last name
-//				errorLastname.setText(lastname.equals("") ? "Το επώνυμο είναι υποχρεωτικό" : "");
-//
-//				// Return if any field is empty
-//				if (selectedCity == null || firstname.equals("") || lastname.equals("")) {
-//					JOptionPane.showMessageDialog(null, "Please fill all fields!", "Error", JOptionPane.ERROR_MESSAGE);
-//				    return;
-//				}
-               
-				
-				// Insert
-				
-//				String sql = "INSERT INTO teachers (firstname, lastname, vat, fathername, phone_num, "
-//            			+ "email, street, street_num, zipcode, city_id, uuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				
-//            	Connection conn = Dashboard.getConnection();
-            	
-//				try (Connection conn = DBUtil.getConnection();
-//					 PreparedStatement ps = conn.prepareStatement(sql)) {
-//
-//					ps.setString(1, firstname);
-//					ps.setString(2, lastname);
-//					ps.setString(3, vat);
-//					ps.setString(4, fathername);
-//					ps.setString(5, phoneNumber);
-//					ps.setString(6, email);
-//					ps.setString(7, street);
-//					ps.setString(8, streetNumber);
-//					ps.setString(9, zipcode);
-//					ps.setInt(10,cityId);
-//
-//					String uuid = UUID.randomUUID().toString();
-//				    ps.setString(11, uuid);
-//
-//					int n = ps.executeUpdate();
-//
-//					JOptionPane.showMessageDialog(null,  n + " record(s) inserted", "INSERT", JOptionPane.PLAIN_MESSAGE);
-//				} catch (SQLException e1) {
-//				    e1.printStackTrace();
-//					JOptionPane.showMessageDialog(null,  "Insertion error", "Error", JOptionPane.ERROR_MESSAGE);
-//				}
+				Map<String , String > errors = TeacherValidator.validate(insertDTO);
+				if (!errors.isEmpty()) {
+					errorFirstname.setText(errors.getOrDefault("firstname", ""));
+					errorLastname.setText(errors.getOrDefault("lastname", ""));
+					return;
+				}
+
+				try {
+					teacherReadOnlyDTO = teacherService.insertTeacher(insertDTO);
+					JOptionPane.showMessageDialog(null, "Teacher with uuid: " + teacherReadOnlyDTO.getUuid(), "Insert", JOptionPane.INFORMATION_MESSAGE);
+					// todo form instead of message dialog
+				} catch (TeacherDAOException | TeacherAlreadyExistsException ex) {
+					JOptionPane.showMessageDialog(null, "Error. " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -371,5 +339,22 @@ public class InsertTeacherPage extends JFrame {
 //		}
 //		return cities;
 		return null;
+	}
+
+	private TeacherInsertDTO doDataBinding() {
+		final int DEFAULT_CITY_ID = 1;
+		String firstname = firstnameText.getText().trim();
+		String lastname = lastnameText.getText().trim();
+		String vat = vatText.getText().trim();
+		String fathername = fathernameText.getText().trim();
+		String phoneNumber = phoneNumberText.getText().trim();
+		String email = emailText.getText().trim();
+		String street = streetText.getText().trim();
+		String streetNumber = streetNumberText.getText().trim();
+		City selectedCity = (City) cityComboBox.getSelectedItem();
+		int cityId = (selectedCity != null) ? selectedCity.getId() : DEFAULT_CITY_ID;
+		String zipcode = zipcodeText.getText().trim();
+
+		return new TeacherInsertDTO(firstname, lastname, vat, fathername, phoneNumber, email, street, streetNumber, zipcode, cityId);
 	}
 }
