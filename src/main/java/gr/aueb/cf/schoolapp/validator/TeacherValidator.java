@@ -25,7 +25,7 @@ public class TeacherValidator<T> {
             errors.put("firstname", "Firstname must not include spaces");
         }
 
-        if (dto.getFirstname().matches("^.*\\s+.*$")) {
+        if (dto.getLastname().matches("^.*\\s+.*$")) {
             errors.put("lastname", "Lastname must not include spaces");
         }
 
